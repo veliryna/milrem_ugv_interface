@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import Map from './components/Map.vue';
+import InterfaceView from './views/InterfaceView.vue';
 </script>
 
 <template>
-  <div>
-    <Map></Map>
-  </div>
+  <InterfaceView></InterfaceView>
 </template>
 
 <style scoped>
