@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import LeafletMap from './components/LeafletMap.vue'
+import Map from './components/Map.vue';
 </script>
 
 <template>
   <div>
-    <LeafletMap/>
+    <Map></Map>
   </div>
 </template>
 
