@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import Map from '@/components/Map.vue';
+import MapWidget from '@/components/MapWidget.vue';
 </script>
 
 <template>
   <main>
-    <Map></Map>
+    <MapWidget></MapWidget>
   </main>
 </template>
