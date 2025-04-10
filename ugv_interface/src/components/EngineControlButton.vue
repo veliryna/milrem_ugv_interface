@@ -1,17 +1,24 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { defineProps, defineEmits } from 'vue';
 
-const isEngineOn = ref(false)
+const props = defineProps({
+  isEngineOn: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+const emit = defineEmits(['toggle-engine']);
 
 function toggleEngine() {
-  isEngineOn.value = !isEngineOn.value
+  emit('toggle-engine');
 }
 </script>
 
 <template>
   <div class="engine-control-button" @click="toggleEngine">
     <div :class="['icon', { on: isEngineOn }]">⏻</div>
-    <div class="label">{{ isEngineOn ? 'ENGINE ON' : 'ENGINE OFF' }}</div>
+    <div class="label">{{ props.isEngineOn ? 'ENGINE ON' : 'ENGINE OFF' }}</div>
   </div>
 </template>
 
