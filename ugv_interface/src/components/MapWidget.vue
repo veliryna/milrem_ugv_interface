@@ -82,7 +82,7 @@ onUnmounted(() => {
 <template>
   <div class="map-wrapper">
     <GoogleMap
-      api-key="AIzaSyANGtl9Mv0kZZg4oQbNkqu8jKmDx2X9EyQ"
+      api-key=""
       style="width: 60vw; height: 90vh;"
       :center="center"
       :zoom="15"
