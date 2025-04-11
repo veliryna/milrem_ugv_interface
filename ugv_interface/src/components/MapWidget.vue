@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { GoogleMap, Marker } from 'vue3-google-map';
-import { ref, onMounted, onUnmounted, watch } from 'vue';
+import { ref, onMounted, onUnmounted, watch, h } from 'vue';
+import { toast } from 'vue3-toastify'
 import EngineControlButton from './EngineControlButton.vue';
 import VehicleLocationDisplay from './VehicleLocationDisplay.vue';
+import EngineStatusPopup from './EngineStatusPopup.vue';
 
 const center = ref({ lat: 59.4050, lng: 24.5630 });
 const markerOptions = ref({ position: center.value, label: 'UGV' });
@@ -19,6 +21,9 @@ function toggleEngine() {
 const handleKeyDown = (event: KeyboardEvent) => {
   if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) {
     keysPressed.value[event.key] = true;
+    if (!isEngineOn.value) {
+      toast.info(h(EngineStatusPopup));
+    }
   }
 };
 
