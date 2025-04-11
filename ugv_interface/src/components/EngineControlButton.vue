@@ -25,8 +25,8 @@ function toggleEngine() {
 <style scoped>
 .engine-control-button {
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: 10px;
+  right: 10px;
   width: 80px;
   height: 80px;
   background-color: rgba(77, 77, 77, 0.8);

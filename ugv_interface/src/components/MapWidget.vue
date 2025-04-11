@@ -2,6 +2,7 @@
 import { GoogleMap, Marker } from 'vue3-google-map';
 import { ref, onMounted, onUnmounted, watch } from 'vue';
 import EngineControlButton from './EngineControlButton.vue';
+import VehicleLocationDisplay from './VehicleLocationDisplay.vue';
 
 const center = ref({ lat: 59.4050, lng: 24.5630 });
 const markerOptions = ref({ position: center.value, label: 'UGV' });
@@ -91,6 +92,7 @@ onUnmounted(() => {
     >
     <Marker :options="markerOptions" />
     </GoogleMap>
+    <VehicleLocationDisplay :lat="center.lat" :lng="center.lng" />
     <EngineControlButton @toggle-engine="toggleEngine" :isEngineOn="isEngineOn"/>
   </div>
 </template>
