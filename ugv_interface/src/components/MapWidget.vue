@@ -5,6 +5,17 @@ import { toast } from 'vue3-toastify'
 import EngineControlButton from './EngineControlButton.vue';
 import VehicleLocationDisplay from './VehicleLocationDisplay.vue';
 import EngineStatusPopup from './EngineStatusPopup.vue';
+import { useWaypointStore } from '@/store/waypoint-store'
+
+const waypointStore = useWaypointStore()
+waypointStore.addWaypoint({
+    name: 'New Point',
+    coords: { lat: 59.4, lng: 24.56 }
+})
+waypointStore.addWaypoint({
+    name: 'Second Point',
+    coords: { lat: 59.45, lng: 24.53 }
+})
 
 const center = ref({ lat: 59.4050, lng: 24.5630 });
 const markerOptions = ref({ position: center.value, label: 'UGV' });
@@ -13,10 +24,6 @@ const moveSpeed = 0.00005;
 
 const keysPressed = ref<{ [key: string]: boolean }>({});
 let animationFrameId: number | null = null;
-
-function toggleEngine() {
-  isEngineOn.value = !isEngineOn.value;
-}
 
 const handleKeyDown = (event: KeyboardEvent) => {
   if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) {
@@ -32,6 +39,10 @@ const handleKeyUp = (event: KeyboardEvent) => {
     keysPressed.value[event.key] = false;
   }
 };
+
+function toggleEngine() {
+  isEngineOn.value = !isEngineOn.value;
+}
 
 function moveUGV() {
   if (!isEngineOn.value) {
@@ -88,7 +99,7 @@ onUnmounted(() => {
 <template>
   <div class="map-wrapper">
     <GoogleMap
-      api-key=""
+      api-key="AIzaSyANGtl9Mv0kZZg4oQbNkqu8jKmDx2X9EyQ"
       style="width: 60vw; height: 90vh;"
       :center="center"
       :zoom="15"
@@ -107,7 +118,6 @@ onUnmounted(() => {
   position: relative;
   width: 60vw;
   height: 90vh;
-  float: left;
 }
 </style>
 
