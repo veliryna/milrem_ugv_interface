@@ -67,17 +67,21 @@ const newName = ref(props.initialName);
 
 .rename-dialog .buttons button {
   padding: 10px 15px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
   cursor: pointer;
+  font-weight: bold;
+  background-color: rgba(99, 154, 132, 0.5);
+  border-radius: 5px;
 }
 
-.rename-dialog .buttons button:hover {
-  background-color: #f0f0f0;
+h3{
+  font-weight: bold;
 }
 
 .rename-dialog .buttons button:first-child {
-  background-color: transparent;
-  color: #333;
+  background-color: rgba(99, 154, 132, 0.5);;
+}
+
+.rename-dialog .buttons button:hover {
+  background-color: rgb(183,183,183);
 }
 </style>

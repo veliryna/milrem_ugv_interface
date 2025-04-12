@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { useWaypointStore } from '@/store/waypoint-store'
 import WaypointRenameDialog from './WaypointRenameDialog.vue';
+import { ugvPositionStore } from '@/store/ugv-position-store';
 
 interface WayPoint {
   name: string;
@@ -19,6 +20,7 @@ interface Props {
 const props = defineProps<Props>()
 const emit = defineEmits(['waypoint-updated'])
 const waypointStore = useWaypointStore()
+const ugvLocation = ugvPositionStore()
 
 const showMenu = ref(false)
 const showRenameDialog = ref(false)
@@ -47,7 +49,7 @@ function closeRenameDialog() {
 }
 
 function driveToWaypoint() {
-  alert(`Driving to ${props.waypoint.name}`)
+  ugvLocation.setCenter(props.waypoint.coords)
   showMenu.value = false
 }
 </script>
@@ -64,9 +66,12 @@ function driveToWaypoint() {
     <teleport to="body">
       <div v-if="showMenu" class="menu-overlay" @click.self="showMenu = false">
         <div class="menu-dialog">
-          <button @click="deleteWaypoint">Delete</button>
-          <button @click="openRenameDialog">Rename</button>
-          <button @click="driveToWaypoint">Drive</button>
+          <h3>Waypoint Actions</h3>
+          <div class="buttons">
+            <button @click="deleteWaypoint">Delete</button>
+            <button @click="openRenameDialog">Rename</button>
+            <button @click="driveToWaypoint">Drive</button>
+          </div>
         </div>
       </div>
 
@@ -114,18 +119,29 @@ function driveToWaypoint() {
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  gap: 15px;
+}
+
+h3{
+  font-weight: bold;
+}
+
+.menu-dialog .buttons {
+  display: flex;
   gap: 10px;
+  justify-content: flex-end;
 }
 
-.menu-dialog button {
+.menu-dialog .buttons button {
   padding: 10px 15px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
   cursor: pointer;
+  font-weight: bold;
+  background-color: rgba(99, 154, 132, 0.5);
+  border-radius: 5px;
 }
 
-.menu-dialog button:hover {
-  background-color: #f0f0f0;
+.menu-dialog .buttons button:hover {
+  background-color: rgb(183,183,183);
 }
 </style>

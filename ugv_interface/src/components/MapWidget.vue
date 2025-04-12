@@ -5,17 +5,49 @@ import { toast } from 'vue3-toastify'
 import EngineControlButton from './EngineControlButton.vue';
 import VehicleLocationDisplay from './VehicleLocationDisplay.vue';
 import EngineStatusPopup from './EngineStatusPopup.vue';
+import WaypointCreationDialog from './WaypointCreationDialog.vue';
 import { useWaypointStore } from '@/store/waypoint-store'
 
-const waypointStore = useWaypointStore()
-waypointStore.addWaypoint({
-    name: 'New Point',
-    coords: { lat: 59.4, lng: 24.56 }
-})
-waypointStore.addWaypoint({
-    name: 'Second Point',
-    coords: { lat: 59.45, lng: 24.53 }
-})
+const waypointStore = useWaypointStore();
+const newWaypointCoords = ref<{ lat: number; lng: number } | null>(null);
+const showWaypointCreationPopup = ref(false);
+
+const handleMapClick = (event: google.maps.MapMouseEvent | null) => {
+  if (event?.latLng) {
+    newWaypointCoords.value = {
+      lat: event.latLng.lat(),
+      lng: event.latLng.lng(),
+    };
+    showWaypointCreationPopup.value = true;
+  }
+};
+
+const driveToNewWaypoint = () => {
+  if (newWaypointCoords.value) {
+    center.value = newWaypointCoords.value;
+  }
+  closeWaypointCreationPopup();
+};
+
+const saveNewWaypoint = () => {
+  if (newWaypointCoords.value) {
+    const name = "Waypoint " + (waypointStore.waypoints.length+1).toString();
+    waypointStore.addWaypoint({
+      name: name,
+      coords: newWaypointCoords.value,
+    });
+  }
+  closeWaypointCreationPopup();
+};
+
+const discardNewWaypoint = () => {
+  closeWaypointCreationPopup();
+};
+
+const closeWaypointCreationPopup = () => {
+  newWaypointCoords.value = null;
+  showWaypointCreationPopup.value = false;
+};
 
 const center = ref({ lat: 59.4050, lng: 24.5630 });
 const markerOptions = ref({ position: center.value, label: 'UGV' });
@@ -105,11 +137,22 @@ onUnmounted(() => {
       :zoom="15"
       :fullscreen-control="false"
       :street-view-control="false"
+      @click="handleMapClick"
     >
     <Marker :options="markerOptions" />
     </GoogleMap>
     <VehicleLocationDisplay :lat="center.lat" :lng="center.lng" />
     <EngineControlButton @toggle-engine="toggleEngine" :isEngineOn="isEngineOn"/>
+
+    <WaypointCreationDialog
+      v-if="showWaypointCreationPopup"
+      :coords="newWaypointCoords"
+      @drive="driveToNewWaypoint"
+      @save="saveNewWaypoint"
+      @discard="discardNewWaypoint"
+      @close="closeWaypointCreationPopup"
+    />
+
   </div>
 </template>
 
