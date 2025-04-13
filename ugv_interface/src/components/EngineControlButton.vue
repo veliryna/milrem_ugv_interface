@@ -8,7 +8,7 @@ const props = defineProps({
 
 const emit = defineEmits(['toggle-engine']);
 
-function toggleEngine() {
+const toggleEngine = () => {
   emit('toggle-engine');
 }
 </script>

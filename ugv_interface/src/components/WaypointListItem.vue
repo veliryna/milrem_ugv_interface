@@ -26,29 +26,29 @@ const showMenu = ref(false)
 const showRenameDialog = ref(false)
 const editedName = ref('')
 
-function deleteWaypoint() {
+const deleteWaypoint = () => {
   waypointStore.removeWaypoint(props.index)
   showMenu.value = false
   emit('waypoint-updated')
 }
 
-function openRenameDialog() {
+const openRenameDialog = () => {
   editedName.value = props.waypoint.name
   showRenameDialog.value = true
   showMenu.value = false
 }
 
-function renameWaypoint(newName: string) {
+const renameWaypoint = (newName: string) => {
   waypointStore.updateWaypoint(props.index, newName)
   showRenameDialog.value = false
   emit('waypoint-updated')
 }
 
-function closeRenameDialog() {
+const closeRenameDialog = () => {
   showRenameDialog.value = false
 }
 
-function driveToWaypoint() {
+const driveToWaypoint = () => {
   ugvLocation.setNewPosition(props.waypoint.coords)
   showMenu.value = false
 }
