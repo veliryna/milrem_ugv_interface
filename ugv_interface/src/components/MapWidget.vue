@@ -2,13 +2,19 @@
 import { GoogleMap, Marker } from 'vue3-google-map';
 import { ref, onMounted, onUnmounted, watch, h } from 'vue';
 import { toast } from 'vue3-toastify'
+import { useWaypointStore } from '@/store/waypoint-store';
+import { ugvPositionStore } from '@/store/ugv-position-store';
+import { storeToRefs } from 'pinia';
+
 import EngineControlButton from './EngineControlButton.vue';
 import VehicleLocationDisplay from './VehicleLocationDisplay.vue';
 import EngineStatusPopup from './EngineStatusPopup.vue';
 import WaypointCreationDialog from './WaypointCreationDialog.vue';
-import { useWaypointStore } from '@/store/waypoint-store'
 
 const waypointStore = useWaypointStore();
+const ugvStore = ugvPositionStore();
+const { center: ugvPosition } = storeToRefs(ugvStore);
+
 const newWaypointCoords = ref<{ lat: number; lng: number } | null>(null);
 const showWaypointCreationPopup = ref(false);
 
@@ -24,7 +30,7 @@ const handleMapClick = (event: google.maps.MapMouseEvent | null) => {
 
 const driveToNewWaypoint = () => {
   if (newWaypointCoords.value) {
-    center.value = newWaypointCoords.value;
+    ugvStore.setNewPosition(newWaypointCoords.value);
   }
   closeWaypointCreationPopup();
 };
@@ -49,7 +55,7 @@ const closeWaypointCreationPopup = () => {
   showWaypointCreationPopup.value = false;
 };
 
-const center = ref({ lat: 59.4050, lng: 24.5630 });
+const center = ugvPosition; // Use the reactive UGV position from the store
 const markerOptions = ref({ position: center.value, label: 'UGV' });
 const isEngineOn = ref(false);
 const moveSpeed = 0.00005;
@@ -83,8 +89,8 @@ function moveUGV() {
   }
 
   let moved = false;
-  let newLat = center.value.lat;
-  let newLng = center.value.lng;
+  let newLat = ugvPosition.value.lat;
+  let newLng = ugvPosition.value.lng;
 
   if (keysPressed.value['ArrowUp']) {
     newLat += moveSpeed;
@@ -104,13 +110,13 @@ function moveUGV() {
   }
 
   if (moved) {
-    center.value = { lat: newLat, lng: newLng };
+    ugvStore.setNewPosition({ lat: newLat, lng: newLng });
   }
 
   animationFrameId = requestAnimationFrame(moveUGV);
 }
 
-watch(center, (newPosition) => {
+watch(ugvPosition, (newPosition) => {
   markerOptions.value = { ...markerOptions.value, position: newPosition };
 });
 
@@ -141,7 +147,7 @@ onUnmounted(() => {
     >
     <Marker :options="markerOptions" />
     </GoogleMap>
-    <VehicleLocationDisplay :lat="center.lat" :lng="center.lng" />
+    <VehicleLocationDisplay :lat="ugvPosition.lat" :lng="ugvPosition.lng" />
     <EngineControlButton @toggle-engine="toggleEngine" :isEngineOn="isEngineOn"/>
 
     <WaypointCreationDialog

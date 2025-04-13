@@ -7,11 +7,11 @@ interface Coords {
 }
 
 export const ugvPositionStore = defineStore('ugvPositionStore', () => {
-  const center = ref<Coords>({ lat: 59.4050, lng: 24.5630 });
+  const position = ref<Coords>({ lat: 59.4050, lng: 24.5630 });
 
-  function setCenter(newCenter: Coords) {
-    center.value = newCenter;
+  function setNewPosition(newPosition: Coords) {
+    position.value = newPosition;
   }
 
-  return { center, setCenter };
+  return { center: position, setNewPosition };
 });

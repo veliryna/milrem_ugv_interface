@@ -49,7 +49,7 @@ function closeRenameDialog() {
 }
 
 function driveToWaypoint() {
-  ugvLocation.setCenter(props.waypoint.coords)
+  ugvLocation.setNewPosition(props.waypoint.coords)
   showMenu.value = false
 }
 </script>
