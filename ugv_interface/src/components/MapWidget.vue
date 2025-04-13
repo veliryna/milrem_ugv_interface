@@ -16,16 +16,19 @@ const ugvStore = ugvPositionStore();
 const { center: ugvPosition } = storeToRefs(ugvStore);
 
 const newWaypointCoords = ref<{ lat: number; lng: number } | null>(null);
+const pressTimeout = ref<number | null>(null);
 const showWaypointCreationPopup = ref(false);
 
-const handleMapClick = (event: google.maps.MapMouseEvent | null) => {
-  if (event?.latLng) {
-    newWaypointCoords.value = {
+const handleMapLongPress = (event: google.maps.MapMouseEvent | null) => {
+    pressTimeout.value = setTimeout(() => {
+      if (event?.latLng) {
+      newWaypointCoords.value = {
       lat: event.latLng.lat(),
       lng: event.latLng.lng(),
+      }
     };
-    showWaypointCreationPopup.value = true;
-  }
+      showWaypointCreationPopup.value = true;
+    }, 1000);
 };
 
 const driveToNewWaypoint = () => {
@@ -55,7 +58,7 @@ const closeWaypointCreationPopup = () => {
   showWaypointCreationPopup.value = false;
 };
 
-const center = ugvPosition; // Use the reactive UGV position from the store
+const center = ugvPosition;
 const markerOptions = ref({ position: center.value, label: 'UGV' });
 const isEngineOn = ref(false);
 const moveSpeed = 0.00005;
@@ -143,7 +146,7 @@ onUnmounted(() => {
       :zoom="15"
       :fullscreen-control="false"
       :street-view-control="false"
-      @click="handleMapClick"
+      @click="handleMapLongPress"
     >
     <Marker :options="markerOptions" />
     </GoogleMap>
