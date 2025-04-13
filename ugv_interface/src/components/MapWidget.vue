@@ -138,7 +138,7 @@ onUnmounted(() => {
   <div class="map-wrapper">
     <GoogleMap
       api-key="AIzaSyANGtl9Mv0kZZg4oQbNkqu8jKmDx2X9EyQ"
-      style="width: 60vw; height: 90vh;"
+      style="width: 80vw; height: 100vh;"
       :center="center"
       :zoom="15"
       :fullscreen-control="false"
@@ -165,8 +165,8 @@ onUnmounted(() => {
 <style scoped>
 .map-wrapper {
   position: relative;
-  width: 60vw;
-  height: 90vh;
+  width: 80vw;
+  height: 100vh;
 }
 </style>
 

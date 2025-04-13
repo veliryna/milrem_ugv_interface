@@ -22,14 +22,15 @@ const { waypoints } = storeToRefs(waypointStore);
 
 <style scoped>
 .waypoint-list {
-  height: 90vh;
-  width: 30vh;
+  height: 100vh;
+  width: calc(20vw - 20px);
   overflow-y: auto;
   background-color: #f9f9f9;
   padding: 10px;
   box-sizing: border-box;
-  border: solid 1px rgb(92, 148, 92);
+  border: solid 2px rgb(92, 148, 92);
   border-radius: 5px;
+  margin: 10px 0px 10px 0px;
 }
 h2{
   text-align: center;

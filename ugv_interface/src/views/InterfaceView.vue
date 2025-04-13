@@ -4,10 +4,10 @@ import WaypointList from '@/components/WaypointList.vue';
 </script>
 
 <template>
-    <main class="interface-container">
+    <div class="interface-container">
       <MapWidget></MapWidget>
       <WaypointList></WaypointList>
-    </main>
+    </div>
 </template>
 
 <style scoped>
