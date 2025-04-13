@@ -6,10 +6,14 @@ import { useWaypointStore } from '@/store/waypoint-store';
 import { ugvPositionStore } from '@/store/ugv-position-store';
 import { storeToRefs } from 'pinia';
 
+const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+defineExpose({ apiKey });
+
 import EngineControlButton from './EngineControlButton.vue';
 import VehicleLocationDisplay from './VehicleLocationDisplay.vue';
 import EngineStatusPopup from './EngineStatusPopup.vue';
 import WaypointCreationDialog from './WaypointCreationDialog.vue';
+import ugvIcon from '@/assets/uvg.svg';
 
 const waypointStore = useWaypointStore();
 const ugvStore = ugvPositionStore();
@@ -22,11 +26,11 @@ const showWaypointCreationPopup = ref(false);
 const handleMapLongPress = (event: google.maps.MapMouseEvent | null) => {
     pressTimeout.value = setTimeout(() => {
       if (event?.latLng) {
-      newWaypointCoords.value = {
-      lat: event.latLng.lat(),
-      lng: event.latLng.lng(),
+        newWaypointCoords.value = {
+          lat: event.latLng.lat(),
+          lng: event.latLng.lng(),
+        }
       }
-    };
       showWaypointCreationPopup.value = true;
     }, 1000);
 };
@@ -59,7 +63,7 @@ const closeWaypointCreationPopup = () => {
 };
 
 const center = ugvPosition;
-const markerOptions = ref({ position: center.value, label: 'UGV' });
+const markerOptions = ref({ position: center.value, icon: ugvIcon });
 const isEngineOn = ref(false);
 const moveSpeed = 0.00005;
 
@@ -81,13 +85,13 @@ const handleKeyUp = (event: KeyboardEvent) => {
   }
 };
 
-function toggleEngine() {
+const toggleEngine = () => {
   isEngineOn.value = !isEngineOn.value;
 }
 
-function moveUGV() {
+const moveVehicle = () => {
   if (!isEngineOn.value) {
-    animationFrameId = requestAnimationFrame(moveUGV);
+    animationFrameId = requestAnimationFrame(moveVehicle);
     return;
   }
 
@@ -116,17 +120,17 @@ function moveUGV() {
     ugvStore.setNewPosition({ lat: newLat, lng: newLng });
   }
 
-  animationFrameId = requestAnimationFrame(moveUGV);
+  animationFrameId = requestAnimationFrame(moveVehicle);
 }
 
 watch(ugvPosition, (newPosition) => {
-  markerOptions.value = { ...markerOptions.value, position: newPosition };
+  markerOptions.value = { ...markerOptions.value, position: newPosition, icon: ugvIcon };
 });
 
 onMounted(() => {
   window.addEventListener('keydown', handleKeyDown);
   window.addEventListener('keyup', handleKeyUp);
-  animationFrameId = requestAnimationFrame(moveUGV);
+  animationFrameId = requestAnimationFrame(moveVehicle);
 });
 
 onUnmounted(() => {
@@ -140,7 +144,7 @@ onUnmounted(() => {
 <template>
   <div class="map-wrapper">
     <GoogleMap
-      api-key="AIzaSyANGtl9Mv0kZZg4oQbNkqu8jKmDx2X9EyQ"
+      :api-key="apiKey"
       style="width: 80vw; height: 100vh;"
       :center="center"
       :zoom="15"
@@ -148,7 +152,7 @@ onUnmounted(() => {
       :street-view-control="false"
       @click="handleMapLongPress"
     >
-    <Marker :options="markerOptions" />
+    <Marker :options="markerOptions"/>
     </GoogleMap>
     <VehicleLocationDisplay :lat="ugvPosition.lat" :lng="ugvPosition.lng" />
     <EngineControlButton @toggle-engine="toggleEngine" :isEngineOn="isEngineOn"/>
