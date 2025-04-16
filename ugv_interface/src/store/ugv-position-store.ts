@@ -7,7 +7,7 @@ interface Coords {
 }
 
 export const ugvPositionStore = defineStore('ugvPositionStore', () => {
-  const position = ref<Coords>({ lat: import.meta.env.VITE_INITIAL_LAT, lng: import.meta.env.VITE_INITIAL_LONG });
+  const position = ref<Coords>({ lat: Number(import.meta.env.VITE_INITIAL_LAT), lng: Number(import.meta.env.VITE_INITIAL_LONG) });
 
   function setNewPosition(newPosition: Coords) {
     position.value = newPosition;
