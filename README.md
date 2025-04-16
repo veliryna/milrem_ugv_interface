@@ -3,9 +3,11 @@ Software Engineering (HMI) Internship Home Assignment at Milrem Robotics.
 
 An interface prototype for an Unmanned Ground Vehicle (UGV) system, created with Vue 3 and TypeScript.
 
-## Demo
+## Demo Video
+_Previous project demo video had pixelated glitches at the end. I captured and uploaded a new one._
 
-[Project Demo](https://github.com/user-attachments/assets/f7230e17-77b8-4182-bdd7-44dcf449141d)
+[Project Demo](https://github.com/user-attachments/assets/f54b5e64-a92f-42b5-a61b-1df01fe4f802)
+
 
 ## Prerequisites
 
