@@ -10,11 +10,13 @@ _Previous project demo video had pixelated glitches at the end. I captured and u
 
 
 ## Prerequisites
+- Node.js v.20 or higher
+- npm package manager 
 
-This application uses Google Maps, so you need to generate the api key:
+This application uses Google Maps, so you need to generate your own api key:
 - Sign in to the Google Cloud Console.
 - Enable the Maps JavaScript API.
-- Generate an API Key.
+- Generate an API key.
 - Add the key to a `.env` file at the root of the project.
   
   ```env
@@ -39,28 +41,27 @@ This application uses Google Maps, so you need to generate the api key:
 
 The UGV interface has the following features:
 
-### 1. **Map View**
+### **Map View**
 - Displays the current UGV position as a custom vehicle icon marker.
 - Map automatically updates as the UGV moves or drives to waypoint.
 
-### 2. **Waypoints Creation**
+### **Waypoints Creation**
 - Long press on the map lets you to create a waypoint.
 - A dialog will appear with the options:
   - **Save** – Adds the waypoint to the store.
   - **Drive** – Sends the UGV to this point.
   - **Discard** – Cancels the action.
 
-### 3. **UGV Movement Controls**
+### **UGV Movement Controls**
 - Use the **Arrow Keys** on your keyboard to maneuver the vehicle.
 - Engine must be **ON** for the UGV to respond. Engine control button is at the top-right corner of the map.
 - Each key press will move the UGV in the respective direction.
-  
-> If the engine is off, a toast popup reminds the user to start it.
+- If the engine is off, a toast popup reminds you to start it.
 
-### 4. **Vehicle Location Display**
+### **Vehicle Location Display**
 - Displays the current latitude and longitude of the UGV in real-time.
 
-### 5. **Waypoint List**
+### **Waypoint List**
 - Displays a list of the saved waypoints with their names and coordinates.
 - If you click on list item, dialog will appear with possible waypoint actions:
   - **Delete** – Delete the waypoint from the store.
